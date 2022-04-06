@@ -87,7 +87,6 @@ void error(const char *code, size_t p, const char *fmt, ...) {
   char *buf=NULL;
   size_t len=0;
 
-
   va_start(args, fmt);
   len=vsnprintf(NULL, 0, fmt, args);
   va_end(args);
@@ -102,6 +101,7 @@ void error(const char *code, size_t p, const char *fmt, ...) {
 
   printf("Error Line %zu Column %zu: %s\n", pos.row, pos.col, buf);
 
+  free(buf);
 }
 
 int run(const char *code) {
