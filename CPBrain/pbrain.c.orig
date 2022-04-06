@@ -86,13 +86,13 @@ void error(const char *code, size_t p, const char *fmt, ...) {
 
   Pos pos=getpos(code, p);
 
-  fprintf(stderr, "Error Line %zu Column %zu: ", pos.row, pos.col);
+  fprintf(stderr,"Error Line %zu Column %zu: ", pos.row, pos.col);
 
   va_start(args, fmt);
   vfprintf(stderr, fmt, args);
   va_end(args);
 
-  fprintf(stderr, "\n");
+  fprintf(stderr,"\n");
 
 }
 
