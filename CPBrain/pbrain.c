@@ -84,24 +84,16 @@ void error(const char *code, size_t p, const char *fmt, ...) {
 
   va_list args;
 
-  char *buf=NULL;
-  size_t len=0;
-
-  va_start(args, fmt);
-  len=vsnprintf(NULL, 0, fmt, args);
-  va_end(args);
-
-  buf=calloc(len+1, sizeof(*buf));
-
-  va_start(args, fmt);
-  vsnprintf(buf, len+1, fmt, args);
-  va_end(args);
-
   Pos pos=getpos(code, p);
 
-  printf("Error Line %zu Column %zu: %s\n", pos.row, pos.col, buf);
+  fprintf(stderr,"Error Line %zu Column %zu: ", pos.row, pos.col);
 
-  free(buf);
+  va_start(args, fmt);
+  vfprintf(stderr, fmt, args);
+  va_end(args);
+
+  fprintf(stderr,"\n");
+
 }
 
 int run(const char *code) {
