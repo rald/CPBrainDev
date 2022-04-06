@@ -128,7 +128,7 @@ int run(const char *code) {
       if(sp>0) {
         sp--;
         if(stack[sp]!='(') {
-          error(code, pstack[sp], "unbalanced (");
+          error(code, pstack[sp], "unbalanced %c", stack[sp]);
           return 1;
         }
       } else {
@@ -140,7 +140,7 @@ int run(const char *code) {
       if(sp>0) {
         sp--;
         if(stack[sp]!='[') {
-          error(code, pstack[sp], "unbalanced [");
+          error(code, pstack[sp], "unbalanced %c", stack[sp]);
           return 1;
         }
       } else {
