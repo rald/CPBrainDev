@@ -101,9 +101,7 @@ void error(const char *code, size_t p, const char *fmt, ...) {
 
 }
 
-int run(const char *code) {
-
-  bool quit=false;
+unsigned char run(const char *code) {
 
   unsigned char mem[MEM_MAX];
   ssize_t proc[PROC_MAX];
@@ -156,7 +154,6 @@ int run(const char *code) {
         error(code, cp, "unbalanced ]");
         return 1;
       }
-      break;
     }
     cp++;
   }
@@ -170,7 +167,7 @@ int run(const char *code) {
   sp=0;
   cp=0;
 
-  while(!quit && code[cp]) {
+  while(code[cp]) {
     switch(code[cp]) {
     case '.':
       putchar(mem[mp]);
@@ -222,6 +219,7 @@ int run(const char *code) {
       if(mem[mp] != 0) {
         d = 1;
         while(cp > 0 && d != 0) {
+
           cp--;
           d += (code[cp] == ']') - (code[cp] == '[');
         }
@@ -273,15 +271,7 @@ int run(const char *code) {
       }
       break;
     case '@':
-      quit=true;
-      continue;
-    case ' ':
-    case '\t':
-    case '\r':
-    case '\n':
-      break;
-    default:
-      error(code, cp, "invalid character");
+      return mem[mp];
     }
     cp++;
   }
@@ -291,6 +281,8 @@ int run(const char *code) {
 
 int main(int argc, char **argv) {
 
+  int ret=0;
+
   if(argc != 2) {
     fprintf(stderr, "Syntax: %s filename.pb\n", argv[0]);
     return 1;
@@ -299,10 +291,10 @@ int main(int argc, char **argv) {
   char *code = slurp(argv[1]);
 
   if(code!=NULL) {
-    run(code);
+    ret=run(code);
     free(code);
     code = NULL;
   }
 
-  return 0;
+  return ret;
 }
