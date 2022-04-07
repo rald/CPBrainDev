@@ -1,5 +1,5 @@
 pbrain: pbrain.c
-	gcc pbrain.c -o pbrain -g
+	gcc pbrain.c -o pbrain -Wall -Wextra -pedantic
 
 .PHONY: style install uninstall clean
 

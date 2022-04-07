@@ -3,10 +3,6 @@
 #include <stdarg.h>
 #include <string.h>
 
-#define MEM_MAX 30000
-#define PROC_MAX 256
-#define STACK_MAX 1024
-
 typedef struct Pos {
   size_t col;
   size_t row;
@@ -102,20 +98,22 @@ void error(const char *code, size_t p, const char *fmt, ...) {
 
 int run(const char *code) {
 
-  unsigned char mem[MEM_MAX];
-  ssize_t proc[PROC_MAX];
-  size_t stack[STACK_MAX];
-  size_t pstack[STACK_MAX];
+  size_t nc=strlen(code);
+
+  unsigned char mem[65536];
+  ssize_t proc[256];
+  size_t stack[nc];
+  size_t pstack[nc];
 
   size_t cp = 0;
   size_t mp = 0;
   size_t sp = 0;
   ssize_t d = 0;
 
-  for(size_t i = 0; i < MEM_MAX; i++)
+  for(size_t i = 0; i < 65536; i++)
     mem[i] = 0;
 
-  for(size_t i = 0; i < PROC_MAX; i++)
+  for(size_t i = 0; i < 256; i++)
     proc[i] = -1;
 
   while(code[cp]) {
@@ -124,11 +122,7 @@ int run(const char *code) {
     case '[':
       stack[sp]=code[cp];
       pstack[sp]=cp;
-      if(sp<STACK_MAX) {
-        sp++;
-      } else {
-        error(code, cp, "too deep");
-      }
+      sp++;
       break;
     case ')':
       if(sp>0) {
